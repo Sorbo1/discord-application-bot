@@ -1,6 +1,8 @@
-import 'dotenv/config';
+import "dotenv/config";
+import { Client, GatewayIntentBits, Collection } from "discord.js";
 
-import { Client, GatewayIntentBits } from 'discord.js';
+import loadCommands from "./handlers/commandHandler.js";
+import loadEvents from "./handlers/eventHandler.js";
 
 const client = new Client({
     intents: [
@@ -9,10 +11,9 @@ const client = new Client({
     ]
 });
 
-client.once('ready', () => {
+client.commands = new Collection();
 
-    console.log(`✅ ${client.user.tag} spuštěn`);
-
-});
+await loadCommands(client);
+await loadEvents(client);
 
 client.login(process.env.TOKEN);
